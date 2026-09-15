@@ -5,7 +5,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
 {
     public Vector2 mousePosition;
     public Vector2 worldMouse;
-    public GameObject transparentSquare;
+    public Vector2 transparentSquare;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,7 +20,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
         worldMouse = Camera.main.ScreenToWorldPoint(mousePosition);
 
         //transparent square position is the same position as mouse
-        transparentSquare.transform.position = worldMouse;
+        transparentSquare = worldMouse;
 
         if (Mouse.current.leftButton.isPressed)
         {
@@ -31,7 +31,14 @@ public class NewMonoBehaviourScript : MonoBehaviour
             Debug.DrawLine(worldMouse - new Vector2(1f, -1f), worldMouse - new Vector2(1f, 1f));
 
         }
-        else { }
+        else 
+        {
+            //transparent square drawn at all times until mouse pressed
+            Debug.DrawLine(worldMouse - new Vector2(1f, 1f), worldMouse - new Vector2(-1f, 1f), new Color(255f,255f,255f, 0.2f));
+            Debug.DrawLine(worldMouse - new Vector2(-1f, 1f), worldMouse - new Vector2(-1f, -1f), new Color(255f, 255f, 255f, 0.2f));
+            Debug.DrawLine(worldMouse - new Vector2(-1f, -1f), worldMouse - new Vector2(1f, -1f), new Color(255f, 255f, 255f, 0.2f));
+            Debug.DrawLine(worldMouse - new Vector2(1f, -1f), worldMouse - new Vector2(1f, 1f), new Color(255f, 255f, 255f, 0.2f));
+        }
 
         
 
