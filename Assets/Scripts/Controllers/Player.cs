@@ -19,9 +19,11 @@ public class Player : MonoBehaviour
             Normalized();
         }
 
+        //when m is pressed run the jump method
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
-
+            //run jump method to warp
+            Jump();
         }
 
 
@@ -39,10 +41,19 @@ public class Player : MonoBehaviour
         Debug.Log(playerpos);
     }
 
+    //method for jump feature
     void Jump()
     {
-        Vector2 enemypos = enemyTransform.position;
-        //calculating the distance using vector substraction.
-        Vector2 direction = enemyTransform.position - transform.position;
+
+        //if transform.position is greater than or equal to enemey transform position then warp the player near the enemy
+        if (transform.position.y >= enemyTransform.position.y && transform.position.x >= enemyTransform.position.x)
+        {
+            transform.position = enemyTransform.position - transform.position;
+        }
+        else
+        {
+            //transform position stays unchanged if not nearby
+            transform.position = transform.position;
+        }
     }
 }
