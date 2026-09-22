@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NUnit.Framework.Internal;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,10 +8,12 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
+    //variable that randomly selects a number from 1-4 for the corners 
+    public float random = Random.Range(1f, 4f);
 
-    
-    
-    
+
+
+
     // Update is called once per frame
     void Update()
     {
@@ -32,6 +35,16 @@ public class Player : MonoBehaviour
         if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             SpawnBombTrail(3,-0.5F);
+        }
+
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            
+           if(random <= 4)
+            {
+                SpawnBombOnRandomCorner(5);
+            }
+            
         }
 
 
@@ -78,4 +91,35 @@ public class Player : MonoBehaviour
         
     }
 
+    void SpawnBombOnRandomCorner(float inDistance)
+    {
+        //corner 1 
+        if(random == 1)
+        {
+            Instantiate(bombPrefab, (transform.position + new Vector3(-inDistance, inDistance, 0)), Quaternion.identity);
+        }
+        //corner 2
+        if (random == 2)
+        {
+            Instantiate(bombPrefab, (transform.position + new Vector3(-inDistance, inDistance, 0)), Quaternion.identity);
+        }
+        //corner 3
+        if (random == 3)
+        {
+            Instantiate(bombPrefab, (transform.position + new Vector3(inDistance, -inDistance, 0)), Quaternion.identity);
+        }
+        //corner 4
+        if (random == 4)
+        {
+            Instantiate(bombPrefab, (transform.position + new Vector3(-inDistance, -inDistance, 0)), Quaternion.identity);
+        }
+        //corner 5
+        if (random == 5)
+        {
+            Instantiate(bombPrefab, (transform.position + new Vector3(inDistance, inDistance, 0)), Quaternion.identity);
+        }
+
+
+        
+    }
 }
