@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
+
+    
+    
     
     // Update is called once per frame
     void Update()
@@ -25,6 +28,12 @@ public class Player : MonoBehaviour
             //run jump method to warp
             Jump();
         }
+
+        if (Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            SpawnBombTrail(3,-0.5F);
+        }
+
 
 
     }
@@ -56,4 +65,17 @@ public class Player : MonoBehaviour
             transform.position = transform.position;
         }
     }
+    
+    void SpawnBombTrail(int numberOfTrailBombs, float BombTrailSpacing)
+    {
+        //for loop to repeat a series of bomb spawning using the numberTrail variable for the parameters, loop until 3 bombs are spawned then stop looping.
+        for(numberOfTrailBombs = 0; numberOfTrailBombs < 3; numberOfTrailBombs++)
+        {
+            //for spacing between the bombs I added a new vector to the instantiate transform and added the spacing * numberOfbombs
+            Instantiate(bombPrefab, transform.position + new Vector3(0, BombTrailSpacing * numberOfTrailBombs - 0.7F, 0), Quaternion.identity);
+            
+        }
+        
+    }
+
 }
