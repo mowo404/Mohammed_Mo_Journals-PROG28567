@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
     //variable that randomly selects a number from 1-4 for the corners 
-    public float random = Random.Range(1f, 4f);
+    
 
 
 
@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
 
         if(Keyboard.current.bKey.wasPressedThisFrame) 
         {
@@ -39,12 +40,9 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
-            
-           if(random <= 4)
-            {
-                SpawnBombOnRandomCorner(5);
-            }
-            
+            //inDistance value is 3 away from the ship
+                SpawnBombOnRandomCorner(3);
+      
         }
 
 
@@ -93,28 +91,28 @@ public class Player : MonoBehaviour
 
     void SpawnBombOnRandomCorner(float inDistance)
     {
-        //corner 1 
-        if(random == 1)
+        //have to make sure its an interger rather than a float so the numbers are exact
+        int random = Random.Range(1, 5);
+        Debug.Log(random);
+
+
+        //corner 1.. if random lands on 1 then draw it in this corner
+        if (random == 1)
         {
             Instantiate(bombPrefab, (transform.position + new Vector3(-inDistance, inDistance, 0)), Quaternion.identity);
         }
-        //corner 2
+        //corner 2.. if random lands on 2 then draw it in this corner
         if (random == 2)
-        {
-            Instantiate(bombPrefab, (transform.position + new Vector3(-inDistance, inDistance, 0)), Quaternion.identity);
-        }
-        //corner 3
-        if (random == 3)
         {
             Instantiate(bombPrefab, (transform.position + new Vector3(inDistance, -inDistance, 0)), Quaternion.identity);
         }
-        //corner 4
-        if (random == 4)
+        //corner 3.. if random lands on 3 then draw it in this corner
+        if (random == 3)
         {
             Instantiate(bombPrefab, (transform.position + new Vector3(-inDistance, -inDistance, 0)), Quaternion.identity);
         }
-        //corner 5
-        if (random == 5)
+        //corner 4.. if random lands on 4 then draw it in this corner
+        if (random == 4)
         {
             Instantiate(bombPrefab, (transform.position + new Vector3(inDistance, inDistance, 0)), Quaternion.identity);
         }
