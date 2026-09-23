@@ -8,18 +8,13 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
-    //variable that randomly selects a number from 1-4 for the corners 
-    
-
-
-
 
     // Update is called once per frame
     void Update()
     {
 
 
-        if(Keyboard.current.bKey.wasPressedThisFrame) 
+        if (Keyboard.current.bKey.wasPressedThisFrame)
         {
             SpawnBombAtOffest(Vector3.up);
             //run output of vector
@@ -35,14 +30,19 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.tKey.wasPressedThisFrame)
         {
-            SpawnBombTrail(3,-0.5F);
+            SpawnBombTrail(3, -0.5F);
         }
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             //inDistance value is 3 away from the ship
-                SpawnBombOnRandomCorner(3);
-      
+            SpawnBombOnRandomCorner(3);
+
+        }
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            DetectAsetroids(10f,asteroidTransforms);
         }
 
 
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         //if transform.position is greater than or equal to enemey transform position then warp the player near the enemy
         if (transform.position.y >= enemyTransform.position.y && transform.position.x >= enemyTransform.position.x)
         {
-            transform.position = enemyTransform.position - transform.position;
+            transform.position = enemyTransform.position - new Vector3(1, 1, 0);
         }
         else
         {
@@ -76,17 +76,17 @@ public class Player : MonoBehaviour
             transform.position = transform.position;
         }
     }
-    
+
     void SpawnBombTrail(int numberOfTrailBombs, float BombTrailSpacing)
     {
         //for loop to repeat a series of bomb spawning using the numberTrail variable for the parameters, loop until 3 bombs are spawned then stop looping.
-        for(numberOfTrailBombs = 0; numberOfTrailBombs < 3; numberOfTrailBombs++)
+        for (numberOfTrailBombs = 0; numberOfTrailBombs < 3; numberOfTrailBombs++)
         {
             //for spacing between the bombs I added a new vector to the instantiate transform and added the spacing * numberOfbombs
             Instantiate(bombPrefab, transform.position + new Vector3(0, BombTrailSpacing * numberOfTrailBombs - 0.7F, 0), Quaternion.identity);
-            
+
         }
-        
+
     }
 
     void SpawnBombOnRandomCorner(float inDistance)
@@ -117,7 +117,23 @@ public class Player : MonoBehaviour
             Instantiate(bombPrefab, (transform.position + new Vector3(inDistance, inDistance, 0)), Quaternion.identity);
         }
 
+    }
 
-        
+    public void DetectAsetroids(float inMaxRange, List<Transform> inAesteroids)
+    {
+
+        for (int i = 0; i < inAesteroids.Count; i++)
+        {
+            //check each transform position in the list 
+            Transform currentAestroid = inAesteroids[i].transform;
+
+            float distance = Vector3.Distance(currentAestroid.position, transform.position);
+            if (distance >= inMaxRange)
+            {
+                Debug.DrawLine(transform.position, currentAestroid.position, Color.green);
+            }
+
+
+        }
     }
 }
