@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework.Internal;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,12 +10,26 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
 
+    public float moveSpeed = 1.0f;
+    public float maxSpeed = 5f;
+    public float accelarationTime = 2f;
+
+    //variable to calculate our actual accelaration so it does not neeed to be public 
+    private float acceleration;
+    //this variable tracks our velocity to keep within update
+    private Vector3 velcoity = Vector3.zero; 
+
+    void Start()
+    {
+        //since we're in start our accelaration only needs to be calculated one time
+        acceleration = maxSpeed / accelarationTime; // a = V/T
+    }
     // Update is called once per frame
     void Update()
     {
 
 
-        if (Keyboard.current.bKey.wasPressedThisFrame)
+        if (Keyboard.current.bKey.isPressed)
         {
             SpawnBombAtOffest(Vector3.up);
             //run output of vector
@@ -22,7 +37,7 @@ public class Player : MonoBehaviour
         }
 
         //when m is pressed run the jump method
-        if (Keyboard.current.wKey.wasPressedThisFrame)
+        if (Keyboard.current.pKey.wasPressedThisFrame)
         {
             //run jump method to warp
             Jump();
@@ -45,14 +60,41 @@ public class Player : MonoBehaviour
             DetectAsetroids(10f,asteroidTransforms);
         }
 
+        if(Keyboard.current.wKey.isPressed) 
+        {
+            //move 1 unit up
+            PlayerMovement(Vector3.up);
+        }
 
+        if (Keyboard.current.aKey.isPressed)
+        {
+            //move 1 unit to the left
+            PlayerMovement(Vector3.left);
+        }
+
+        if (Keyboard.current.sKey.isPressed)
+        {
+            //move 1 unit down
+            PlayerMovement(Vector3.down);
+        }
+
+        if (Keyboard.current.dKey.isPressed)
+        {
+            //move 1 unit to the right
+            PlayerMovement(Vector3.right);
+        }
+
+        //add a formulae like transform.position += Time.deltaTime * velocity;
 
     }
 
+    #region SpawnBombAtOffest
     void SpawnBombAtOffest(Vector3 inOffset)
     {
         Instantiate(bombPrefab, transform.position + inOffset, Quaternion.identity);
     }
+    #endregion
+
 
     void Normalized()
     {
@@ -134,6 +176,19 @@ public class Player : MonoBehaviour
             }
 
 
+        }
+    }
+
+    void PlayerMovement(Vector3 velocity)
+    {
+
+        //increasing our position by the speed variable
+        transform.position += acceleration * moveSpeed * Time.deltaTime * velocity;
+
+        //add a way to limit MaxSpeed
+        if(velocity.magnitude > maxSpeed)
+        {
+            velocity = maxSpeed * velocity.normalized;
         }
     }
 }
