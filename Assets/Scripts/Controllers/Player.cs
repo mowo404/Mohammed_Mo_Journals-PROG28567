@@ -15,10 +15,11 @@ public class Player : MonoBehaviour
     public float accelarationTime = 2f;
 
     //variable to calculate our actual accelaration so it does not neeed to be public 
-    private float acceleration;
+    private float acceleration = 5f;
+    private float deacceleration = 10f;
     //this variable tracks our velocity to keep within update
-    private Vector3 velcoity = Vector3.zero; 
-
+    private Vector2 velocity;
+    private Vector2 stopMovement;
     void Start()
     {
         //since we're in start our accelaration only needs to be calculated one time
@@ -62,29 +63,40 @@ public class Player : MonoBehaviour
 
         if(Keyboard.current.wKey.isPressed) 
         {
-            //move 1 unit up
-            PlayerMovement(Vector3.up);
+            //accelerating 1 unit up
+            velocity += acceleration * Time.deltaTime * Vector2.up;
         }
 
         if (Keyboard.current.aKey.isPressed)
         {
-            //move 1 unit to the left
-            PlayerMovement(Vector3.left);
+            //accelerating 1 unit to the left
+            velocity += acceleration * Time.deltaTime * Vector2.left;
         }
 
         if (Keyboard.current.sKey.isPressed)
         {
-            //move 1 unit down
-            PlayerMovement(Vector3.down);
+            //accelerating 1 unit down
+            velocity += acceleration * Time.deltaTime * Vector2.down;
         }
 
         if (Keyboard.current.dKey.isPressed)
         {
-            //move 1 unit to the right
-            PlayerMovement(Vector3.right);
+            //accelerating 1 unit to the right
+            velocity += acceleration * Time.deltaTime * Vector2.right;
         }
 
-        //add a formulae like transform.position += Time.deltaTime * velocity;
+        //take the value of velocity and our maxSpeed to clamp the velocity vectors to a specific contained value
+        velocity = Vector2.ClampMagnitude(velocity, maxSpeed);
+        //adding velocity (making sure its vector 3 because we cant convert vector 2 to vector 3) to our transform position allowing to move
+        transform.position += (Vector3)velocity * Time.deltaTime;
+
+        //if WASD are let go then start deaccleration...
+        if (!Keyboard.current.wKey.isPressed && !Keyboard.current.sKey.isPressed && !Keyboard.current.dKey.isPressed && !Keyboard.current.aKey.isPressed)
+        {
+            PlayerMovement();
+        }
+
+        
 
     }
 
@@ -179,16 +191,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    void PlayerMovement(Vector3 velocity)
+    void PlayerMovement()
     {
-
-        //increasing our position by the speed variable
-        transform.position += acceleration * moveSpeed * Time.deltaTime * velocity;
-
         //add a way to limit MaxSpeed
-        if(velocity.magnitude > maxSpeed)
-        {
-            velocity = maxSpeed * velocity.normalized;
-        }
+        
+
+            stopMovement = velocity.normalized;
+            
+            if(velocity != Vector2.zero)
+            {
+                velocity -=  Time.deltaTime * deacceleration * stopMovement;
+            }
+        
+
     }
 }
