@@ -33,7 +33,6 @@ public class Asteroid : MonoBehaviour
         transform.position += Time.deltaTime * moveSpeed * Direction;
         //calculating the distance between both aesteroid position and our randomPoint
         distance = Vector3.Distance(transform.position, randomPoint);
-        //transform.position = Vector3.Lerp(transform.position, randomPoint, progress/duration);
         
         if(distance <= arrivalDistance)
         {
