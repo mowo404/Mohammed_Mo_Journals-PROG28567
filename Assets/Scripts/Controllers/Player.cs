@@ -96,8 +96,6 @@ public class Player : MonoBehaviour
             PlayerMovement();
         }
 
-        
-
     }
 
     #region SpawnBombAtOffest
@@ -108,14 +106,17 @@ public class Player : MonoBehaviour
     #endregion
 
 
+    #region Normalized
     void Normalized()
     {
         Vector2 playerpos = new Vector2(3, 4);
         playerpos.Normalize();
         Debug.Log(playerpos);
     }
-
+    #endregion
     //method for jump feature
+
+    #region Jump
     void Jump()
     {
 
@@ -130,7 +131,9 @@ public class Player : MonoBehaviour
             transform.position = transform.position;
         }
     }
+    #endregion
 
+    #region SpawnBombTrail
     void SpawnBombTrail(int numberOfTrailBombs, float BombTrailSpacing)
     {
         //for loop to repeat a series of bomb spawning using the numberTrail variable for the parameters, loop until 3 bombs are spawned then stop looping.
@@ -142,7 +145,9 @@ public class Player : MonoBehaviour
         }
 
     }
+    #endregion
 
+    #region SpawnBombOnRandomCorner
     void SpawnBombOnRandomCorner(float inDistance)
     {
         //have to make sure its an interger rather than a float so the numbers are exact
@@ -172,7 +177,9 @@ public class Player : MonoBehaviour
         }
 
     }
+    #endregion
 
+    #region DetectAsetroids
     public void DetectAsetroids(float inMaxRange, List<Transform> inAesteroids)
     {
 
@@ -190,14 +197,14 @@ public class Player : MonoBehaviour
 
         }
     }
+    #endregion
 
+    #region PlayerMovement
     void PlayerMovement()
     {
-        //add a way to limit MaxSpeed
         
-
             stopMovement = velocity.normalized;
-            
+            //when velocity is changing start deaccelerating
             if(velocity != Vector2.zero)
             {
                 velocity -=  Time.deltaTime * deacceleration * stopMovement;
@@ -205,4 +212,5 @@ public class Player : MonoBehaviour
         
 
     }
+    #endregion
 }
