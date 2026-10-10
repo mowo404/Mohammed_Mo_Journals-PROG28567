@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     //this variable tracks our velocity to keep within update
     private Vector2 velocity;
     private Vector2 stopMovement;
+    public bool circleDraw = true;
     void Start()
     {
         //since we're in start our accelaration only needs to be calculated one time
@@ -96,6 +98,11 @@ public class Player : MonoBehaviour
             PlayerMovement();
         }
 
+        if(Keyboard.current.qKey.wasPressedThisFrame)
+        {
+            circleDraw = !circleDraw;
+        } 
+        EnemyRadar();
     }
 
     #region SpawnBombAtOffest
@@ -114,7 +121,7 @@ public class Player : MonoBehaviour
         Debug.Log(playerpos);
     }
     #endregion
-    //method for jump feature
+    
 
     #region Jump
     void Jump()
@@ -213,4 +220,15 @@ public class Player : MonoBehaviour
 
     }
     #endregion
+
+    public void EnemyRadar()
+    {
+        if (!circleDraw)
+        {
+            //testing out debug.drawline
+            Debug.DrawLine(transform.position + Vector3.up, transform.position + new Vector3(1, 1, 0), Color.green);
+            
+        } 
+    }
 }
+
