@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 {
     public Transform enemyTransform;
     public GameObject bombPrefab;
+    public GameObject powerUpPrefab;
     public List<Transform> asteroidTransforms;
 
     public float moveSpeed = 1.0f;
@@ -24,9 +25,13 @@ public class Player : MonoBehaviour
     private Vector2 velocity;
     private Vector2 stopMovement;
     public bool circleDraw = true;
+    public bool powerUpOn = true;
 
     public float radarRadius = 2F;
     public int radarSideCount = 8;
+
+    public float powerUpspace = 2F;
+    public int powerUpCount = 6;
     float radarDistance;
     float radarNear = 3f;
     void Start()
@@ -67,10 +72,10 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            DetectAsetroids(10f,asteroidTransforms);
+            DetectAsetroids(10f, asteroidTransforms);
         }
 
-        if(Keyboard.current.wKey.isPressed) 
+        if (Keyboard.current.wKey.isPressed)
         {
             //accelerating 1 unit up
             velocity += acceleration * Time.deltaTime * Vector2.up;
@@ -105,11 +110,21 @@ public class Player : MonoBehaviour
             PlayerMovement();
         }
 
-        if(Keyboard.current.qKey.wasPressedThisFrame)
+        if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             circleDraw = !circleDraw;
-        } 
+        }
+
+        if (Keyboard.current.shiftKey.wasPressedThisFrame)
+        {
+            powerUpOn = !powerUpOn;
+        }
+
         EnemyRadar(radarRadius, radarSideCount);
+
+        SpawnPowerups(powerUpspace, powerUpCount);
+
+
     }
 
     #region SpawnBombAtOffest
@@ -128,7 +143,7 @@ public class Player : MonoBehaviour
         Debug.Log(playerpos);
     }
     #endregion
-    
+
 
     #region Jump
     void Jump()
@@ -216,18 +231,19 @@ public class Player : MonoBehaviour
     #region PlayerMovement
     void PlayerMovement()
     {
-        
-            stopMovement = velocity.normalized;
-            //when velocity is changing start deaccelerating
-            if(velocity != Vector2.zero)
-            {
-                velocity -=  Time.deltaTime * deacceleration * stopMovement;
-            }
-        
+
+        stopMovement = velocity.normalized;
+        //when velocity is changing start deaccelerating
+        if (velocity != Vector2.zero)
+        {
+            velocity -= Time.deltaTime * deacceleration * stopMovement;
+        }
+
 
     }
     #endregion
 
+    #region EnemyRadar
     public void EnemyRadar(float radius, int circlePoints)
     {
         //by using the formula for calculating stepAngle (in radians) I can get 8 even points around a circle that I can then use to draw my enemy radar
@@ -269,12 +285,41 @@ public class Player : MonoBehaviour
                 }
             }
 
-            
 
 
 
 
-        } 
+
+        }
+    }
+    #endregion
+
+    public void SpawnPowerups(float radius, int numberOfPowerups)
+    {
+        if (!powerUpOn)
+        {
+            //by using the formula for calculating stepAngle (in radians) I can get points around a circle that I can then use to spawn my powerUps
+            float stepAngle = (2F * Mathf.PI) / numberOfPowerups;
+            //using a for loop contained within the number of powerups to draw each powerup in the right position
+            for (int i = 0; i < numberOfPowerups; i++)
+            {
+                //The first point that I calculate 
+                float baseAngle = i * stepAngle;
+
+                //variables for the x and y positions of our points
+                float xPos = Mathf.Cos(baseAngle) * radius;
+                float yPos = Mathf.Sin(baseAngle) * radius;
+
+                //spawn in our powerUp prefab with equal angular spread 
+                Instantiate(powerUpPrefab, (transform.position + new Vector3(xPos, yPos, 0)), Quaternion.identity);
+
+                
+            }
+
+
+
+        }  
+        
     }
 }
 
