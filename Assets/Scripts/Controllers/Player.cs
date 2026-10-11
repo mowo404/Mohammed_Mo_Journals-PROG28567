@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class Player : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class Player : MonoBehaviour
 
     public float radarRadius = 2F;
     public int radarSideCount = 8;
+    float radarDistance;
+    float radarNear = 3f;
     void Start()
     {
         //since we're in start our accelaration only needs to be calculated one time
@@ -252,10 +255,25 @@ public class Player : MonoBehaviour
                 Vector3 startpoint = (transform.position + new Vector3(xPos, yPos, 0));
                 Vector3 endpoint = (transform.position + new Vector3(xPos2, yPos2, 0));
                 Debug.DrawLine(startpoint, endpoint, Color.green);
+
+                //calculating the distance between player and enemy 
+                radarDistance = Vector3.Distance(transform.position, enemyTransform.position);
+
+                if (radarDistance <= radarNear)
+                {
+                    Debug.DrawLine(startpoint, endpoint, Color.red);
+                }
+                else
+                {
+                    Debug.DrawLine(startpoint, endpoint, Color.green);
+                }
             }
+
             
-           
-            
+
+
+
+
         } 
     }
 }
