@@ -4,6 +4,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class Player : MonoBehaviour
     private Vector2 velocity;
     private Vector2 stopMovement;
     public bool circleDraw = true;
+
+    public float radarRadius = 2F;
+    public int radarSideCount = 8;
     void Start()
     {
         //since we're in start our accelaration only needs to be calculated one time
@@ -102,7 +106,7 @@ public class Player : MonoBehaviour
         {
             circleDraw = !circleDraw;
         } 
-        EnemyRadar();
+        EnemyRadar(radarRadius, radarSideCount);
     }
 
     #region SpawnBombAtOffest
@@ -221,12 +225,36 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    public void EnemyRadar()
+    public void EnemyRadar(float radius, int circlePoints)
     {
+        //by using the formula for calculating stepAngle (in radians) I can get 8 even points around a circle that I can then use to draw my enemy radar
+        float stepAngle = (2F * Mathf.PI) / circlePoints;
+        //if circleDraw is false then we can start the process of drawing the circle
         if (!circleDraw)
         {
-            //testing out debug.drawline
-            Debug.DrawLine(transform.position + Vector3.up, transform.position + new Vector3(1, 1, 0), Color.green);
+            //using a for loop contained within the number of points I can use each point that I calcuated earlier to drawing this radar
+            for (int i = 0; i < circlePoints; i++)
+            {
+                //the baseAngle is just the first point that I calculate 
+                float baseAngle = i * stepAngle;
+                //the nextAngle is the next point in my loop
+                float nextAngle = (i + 1) * stepAngle;
+
+                //variables for the startpoints
+                float xPos = Mathf.Cos(baseAngle) * radius;
+                float yPos = Mathf.Sin(baseAngle) * radius;
+
+                //variables for the endpoints
+                float xPos2 = Mathf.Cos(nextAngle) * radius;
+                float yPos2 = Mathf.Sin(nextAngle) * radius;
+
+                //make a the vectors for both points to sub into Debug.Drawline so that every line is drawn from one point to the next until it makes the radar at the final 8th point
+                Vector3 startpoint = (transform.position + new Vector3(xPos, yPos, 0));
+                Vector3 endpoint = (transform.position + new Vector3(xPos2, yPos2, 0));
+                Debug.DrawLine(startpoint, endpoint, Color.green);
+            }
+            
+           
             
         } 
     }
