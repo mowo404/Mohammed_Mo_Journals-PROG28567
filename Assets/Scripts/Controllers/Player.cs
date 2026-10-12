@@ -294,6 +294,7 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region SpawnPowerups
     public void SpawnPowerups(float radius, int numberOfPowerups)
     {
         if (!powerUpOn)
@@ -321,5 +322,11 @@ public class Player : MonoBehaviour
         }  
         
     }
+    #endregion
+
+
+
 }
+
+
 
