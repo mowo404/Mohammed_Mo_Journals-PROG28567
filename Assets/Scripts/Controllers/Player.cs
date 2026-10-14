@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public float maxSpeed = 5f;
     public float accelarationTime = 2f;
 
+    public float deaccelartionTime = 2f;
+
     //variable to calculate our actual accelaration so it does not neeed to be public 
     private float acceleration = 5f;
     private float deacceleration = 10f;
@@ -43,7 +45,7 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-
+        // accelaration = change in velocity / change in time... accelaration = maxSpeed / accelarationTIme
         if (Keyboard.current.bKey.isPressed)
         {
             SpawnBombAtOffest(Vector3.up);
@@ -99,10 +101,10 @@ public class Player : MonoBehaviour
             velocity += acceleration * Time.deltaTime * Vector2.right;
         }
 
-        //take the value of velocity and our maxSpeed to clamp the velocity vectors to a specific contained value
+        //take the value of velocity and our maxSpeed to clamp the velocity vectors to a specific contained value (limit speed) 
         velocity = Vector2.ClampMagnitude(velocity, maxSpeed);
         //adding velocity (making sure its vector 3 because we cant convert vector 2 to vector 3) to our transform position allowing to move
-        transform.position += (Vector3)velocity * Time.deltaTime;
+        transform.position += (Vector3)velocity * Time.deltaTime; //move relative to velocity
 
         //if WASD are let go then start deaccleration...
         if (!Keyboard.current.wKey.isPressed && !Keyboard.current.sKey.isPressed && !Keyboard.current.dKey.isPressed && !Keyboard.current.aKey.isPressed)
@@ -236,7 +238,7 @@ public class Player : MonoBehaviour
         //when velocity is changing start deaccelerating
         if (velocity != Vector2.zero)
         {
-            velocity -= Time.deltaTime * deacceleration * stopMovement;
+            velocity -= Time.deltaTime * deacceleration * stopMovement; //decelaration this frame 
         }
 
 
