@@ -11,6 +11,11 @@ public class Player : MonoBehaviour
 {
     public Transform enemyTransform;
     public GameObject bombPrefab;
+    public GameObject bulletPrefab;
+    public Transform firePos;
+    public float fireRate;
+    public float bulletSpeed;
+    bool shootingOn = true;
     public GameObject powerUpPrefab;
     public List<Transform> asteroidTransforms;
 
@@ -36,6 +41,7 @@ public class Player : MonoBehaviour
     public int powerUpCount = 6;
     float radarDistance;
     float radarNear = 3f;
+    
     void Start()
     {
         //since we're in start our accelaration only needs to be calculated one time
@@ -122,10 +128,13 @@ public class Player : MonoBehaviour
             powerUpOn = !powerUpOn;
         }
 
+        if (Keyboard.current.spaceKey.isPressed)
+        {
+            shootingOn = !shootingOn;
+        }
         EnemyRadar(radarRadius, radarSideCount);
-
         SpawnPowerups(powerUpspace, powerUpCount);
-
+        shootingBullets(bulletSpeed, -0.5F);
 
     }
 
@@ -326,7 +335,18 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    public void shootingBullets(float speed, float bulletSpacing)
+    {
+        fireRate += Time.deltaTime * speed;
+        if(!shootingOn)
+        {
+            
+                Instantiate(bulletPrefab, transform.position + new Vector3(0, bulletSpacing, 0) * fireRate, Quaternion.identity);
+                
 
+            
+        }
+    }
 
 }
 
