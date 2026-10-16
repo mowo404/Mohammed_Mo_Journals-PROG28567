@@ -23,6 +23,7 @@ public class Asteroid : MonoBehaviour
     void Update()
     { 
         AesteroidMovement();
+        AesteroidRotation();
     }
 
     public void AesteroidMovement()
@@ -42,6 +43,10 @@ public class Asteroid : MonoBehaviour
         
 
 
+
+    }
+    public void AesteroidRotation()
+    {
 
     }
 }
