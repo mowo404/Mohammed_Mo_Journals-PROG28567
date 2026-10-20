@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class Enemy : MonoBehaviour
 {
     public Transform PlayerTransform;
     float distance;
     float DistanceNear = 2f;
+    public Transform firePos;
 
 
     void Update()
     {
+        onHit();
         //calculating the distance between player and enemy 
         distance = Vector3.Distance(PlayerTransform.position, transform.position);
         //if the distance is nearby specifically around 2F then execute Teleport method
@@ -36,5 +39,14 @@ public class Enemy : MonoBehaviour
 
         //change enemy position to the teleport randomly away from player at any point in the screen
         transform.position = cameraPoint;
+    }
+
+    void onHit() //not working :((
+    {
+        if(firePos.position.y <= transform.position.y)
+        {
+            Destroy(gameObject);
+        }
+        
     }
 }

@@ -13,9 +13,6 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public GameObject bulletPrefab;
     public Transform firePos;
-    public float fireRate;
-    public float bulletSpeed;
-    bool shootingOn = true;
     public GameObject powerUpPrefab;
     public List<Transform> asteroidTransforms;
 
@@ -78,11 +75,6 @@ public class Player : MonoBehaviour
 
         }
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            DetectAsetroids(10f, asteroidTransforms);
-        }
-
         if (Keyboard.current.wKey.isPressed)
         {
             //accelerating 1 unit up
@@ -128,13 +120,13 @@ public class Player : MonoBehaviour
             powerUpOn = !powerUpOn;
         }
 
-        if (Keyboard.current.spaceKey.isPressed)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            shootingOn = !shootingOn;
+            shootingBullets();
         }
         EnemyRadar(radarRadius, radarSideCount);
         SpawnPowerups(powerUpspace, powerUpCount);
-        shootingBullets(bulletSpeed, -0.5F);
+        
 
     }
 
@@ -335,20 +327,14 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    public void shootingBullets(float speed, float bulletSpacing)
+    #region shootingBullets
+    void shootingBullets()
     {
-        fireRate += Time.deltaTime * speed;
-        if(!shootingOn)
-        {
-            
-                Instantiate(bulletPrefab, transform.position + new Vector3(0, bulletSpacing, 0) * fireRate, Quaternion.identity);
-                
-
-            
-        }
+                Instantiate(bulletPrefab, firePos.position, Quaternion.identity);
+  
     }
 
 }
-
+#endregion
 
 
