@@ -6,12 +6,13 @@ public class Bullet : MonoBehaviour
     public float bulletSpeed = 1f;
     private Vector3 bulletPos;
     private Vector3 bounds;
-    
+    public Collider2D col;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        GameObject.FindWithTag("EnemyTag");
     }
 
     // Update is called once per frame
@@ -30,10 +31,10 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+        OnHit();
     }
 
-    public void OnHit(Collider2D col)
+    public void OnHit()
     {
         //using the tags we made earlier col.tag checks for the tags assigned to the prefabs to see if the enemy tag collided with the bullet tag
         if (col.tag == "EnemyTag")

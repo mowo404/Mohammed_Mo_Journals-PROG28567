@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     float distance;
     float DistanceNear = 2f;
     public GameObject deathEffect;
+    public Collider2D col;
     
 
 
@@ -27,6 +28,8 @@ public class Enemy : MonoBehaviour
             //the position stays unchanged
             transform.position = transform.position;
         }
+
+        //OnHit(collide);
         
     }
 
@@ -44,7 +47,7 @@ public class Enemy : MonoBehaviour
         transform.position = cameraPoint;
     }
 
-    public void OnHit(Collider2D col)
+   public void OnHit()
     {
         //using the tags we made earlier col.tag checks for the tags assigned to the prefabs to see if the bullet tag collided with the enemy tag
         if (col.tag == "BulletTag")

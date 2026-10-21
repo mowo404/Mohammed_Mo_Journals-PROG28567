@@ -118,10 +118,10 @@ public class Player : MonoBehaviour
             circleDraw = !circleDraw;
         }
 
-        if (Keyboard.current.shiftKey.wasPressedThisFrame)
-        {
-            powerUpOn = !powerUpOn;
-        }
+        //if (Keyboard.current.shiftKey.wasPressedThisFrame)
+        //{
+         //   powerUpOn = !powerUpOn;
+        //}
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {

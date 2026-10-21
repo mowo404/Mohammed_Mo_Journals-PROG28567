@@ -1,10 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PowerUpRing : MonoBehaviour
 {
     public Transform playerTransform;
     public float ringSpeed = 2F;
     float stepAngle;
+    public GameObject Powerprefab;
+    private List<GameObject> powerUps = new List<GameObject>();
+    int maxLimit = 8;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,10 +19,15 @@ public class PowerUpRing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        OrbitalMotion(2F, ringSpeed, playerTransform);
+        if (Keyboard.current.shiftKey.wasPressedThisFrame)
+        {
+
+            SpawnPowerUp();
+        }
+        RingMotion(2F, ringSpeed, playerTransform);
     }
 
-    public void OrbitalMotion(float radius, float speed, Transform target)
+    public void RingMotion(float radius, float speed, Transform target)
     {
 
         //increasing base angle each frame per second and by our set speed
@@ -38,5 +48,15 @@ public class PowerUpRing : MonoBehaviour
 
 
 
+    }
+
+    public void SpawnPowerUp()
+    {
+        //if the powerUp count is less than our max limit then spawn in our powerUpPrefab and keep counting/adding to the list until this statement is false
+        if(powerUps.Count < maxLimit)
+        {
+            GameObject spawn = Instantiate(Powerprefab, playerTransform.position, Quaternion.identity);
+            powerUps.Add(spawn);
+        }
     }
 }
