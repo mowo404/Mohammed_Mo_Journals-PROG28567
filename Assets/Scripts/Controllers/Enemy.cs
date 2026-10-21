@@ -7,12 +7,14 @@ public class Enemy : MonoBehaviour
     public Transform PlayerTransform;
     float distance;
     float DistanceNear = 2f;
-    public Transform firePos;
+    public GameObject deathEffect;
+    
 
 
     void Update()
     {
-        onHit();
+        
+        
         //calculating the distance between player and enemy 
         distance = Vector3.Distance(PlayerTransform.position, transform.position);
         //if the distance is nearby specifically around 2F then execute Teleport method
@@ -25,6 +27,7 @@ public class Enemy : MonoBehaviour
             //the position stays unchanged
             transform.position = transform.position;
         }
+        
     }
 
     void Teleport()
@@ -41,12 +44,14 @@ public class Enemy : MonoBehaviour
         transform.position = cameraPoint;
     }
 
-    void onHit() //not working :((
+    public void OnHit(Collider2D col)
     {
-        if(firePos.position.y <= transform.position.y)
+        //using the tags we made earlier col.tag checks for the tags assigned to the prefabs to see if the bullet tag collided with the enemy tag
+        if (col.tag == "BulletTag")
         {
             Destroy(gameObject);
+            //run the particle system we set up for the death effect to play after the enemy ship is destroyed
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
         }
-        
     }
 }

@@ -6,10 +6,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using static UnityEngine.GraphicsBuffer;
 
 public class Player : MonoBehaviour
 {
     public Transform enemyTransform;
+    
     public GameObject bombPrefab;
     public GameObject bulletPrefab;
     public Transform firePos;
@@ -38,6 +40,7 @@ public class Player : MonoBehaviour
     public int powerUpCount = 6;
     float radarDistance;
     float radarNear = 3f;
+    float stepAngle2;
     
     void Start()
     {
@@ -317,7 +320,6 @@ public class Player : MonoBehaviour
                 //spawn in our powerUp prefab with equal angular spread 
                 Instantiate(powerUpPrefab, (transform.position + new Vector3(xPos, yPos, 0)), Quaternion.identity);
 
-                
             }
 
 
@@ -334,7 +336,9 @@ public class Player : MonoBehaviour
   
     }
 
-}
+
 #endregion
 
 
+
+}
