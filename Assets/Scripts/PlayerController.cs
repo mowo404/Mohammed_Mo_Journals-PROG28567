@@ -17,10 +17,14 @@ public class PlayerController : MonoBehaviour
     //variable to store the current direction
     public FacingDirection facingDirection;
 
+    public Collider2D playerCollider;
+    public Collider2D groundCollider;
+    public bool grounded;
+    
+
     void Start()
     {
-        //assign the rigidbody component to the variable itself
-        Rigidbody = GetComponent<Rigidbody2D>();
+        
         //declare accerlation variable
         acceleration = maxSpeed / accelerationTime;
 
@@ -28,6 +32,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        //create a new raycast the spawned at the center of the player poistion and faced downwards
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
+        //testing out the rayCast2D by drawing it on the player (it works)
+        Debug.DrawRay(transform.position, Vector2.down, Color.red);
         //declaring player input variable
         Vector2 playerInput = new Vector2();
 
@@ -52,6 +60,14 @@ public class PlayerController : MonoBehaviour
             facingDirection = FacingDirection.left;
         }
 
+        //the RayCast2D checks if it hit a 2D collider and sets isGrounded true
+        if (hit.collider != null)
+        {
+            grounded = true; 
+        } else
+        {
+            grounded = false;
+        }
         MovementUpdate(playerInput);
     }
 
@@ -79,7 +95,9 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
-        return false;
+
+      return grounded;
+
     }
 
     public FacingDirection GetFacingDirection()
