@@ -11,7 +11,9 @@ public class PlayerVisuals : MonoBehaviour
 
     void Update()
     {
-        animator.SetBool(isWalkingHash, playerController.IsWalking());
+        Vector2 playerInput = new Vector2();
+
+        animator.SetBool(isWalkingHash, playerController.IsWalking(playerInput));
         animator.SetBool(isGroundedHash, playerController.IsGrounded());
 
         switch (playerController.GetFacingDirection())
